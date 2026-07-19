@@ -112,12 +112,6 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@layer base {
-  body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
-  }
-}
 
 :root {
   --background: oklch(1 0 0);

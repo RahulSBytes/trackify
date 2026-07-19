@@ -4,8 +4,10 @@ import React, { ReactNode } from 'react'
 function layout({ children }: { children: ReactNode }) {
   return (
     <main>
-      <Navbar/>
-      <main>{children}</main>
+      <section className='h-screen flex flex-col'>
+        <Navbar />
+        {children}
+      </section>
     </main>
   )
 }
