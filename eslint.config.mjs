@@ -10,7 +10,6 @@ const eslintConfig = defineConfig([
  ...neostandard({ ts: true }),
   prettierConfig,
   globalIgnores([
-    // Default ignores of eslint-config-next:
     ".next/**",
     "out/**",
     "build/**",

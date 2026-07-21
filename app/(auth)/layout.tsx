@@ -1,7 +1,6 @@
 import { ReactNode } from 'react'
-import { Button } from '@/components/ui/button'
 import Image from 'next/image'
-
+import SocialAuth from '@/components/forms/SocialAuth'
 
 function layout({ children }: { children: ReactNode }) {
   return (
@@ -20,25 +19,15 @@ function layout({ children }: { children: ReactNode }) {
           <p className='text-base text-foreground-muted'>
             Sign in to pick up where you left off.
           </p>
-          <div className='mt-4 flex gap-2'>
-            <Button variant='social' className='flex-1 justify-center gap-3 bg-foreground'>
-              <Image
-                src='/icons/google.svg'
-                height={16}
-                width={16}
-                alt='google'
-              />
-              Google
-            </Button>
-            <Button variant='social' className='flex-1 justify-center bg-foreground'>
-              <Image
-                src='/icons/github.svg'
-                height={20}
-                width={20}
-                alt='github'
-              />
-              Github
-            </Button>
+         <SocialAuth/>
+          <div className='my-4 flex w-full items-center'>
+            {/* eslint-disable-next-line react/self-closing-comp */}
+            <div className='flex-1 border-t border-foreground'></div>
+            <span className='px-4 text-sm font-medium whitespace-nowrap text-foreground-muted'>
+              or continue with email
+            </span>
+            {/* eslint-disable-next-line react/self-closing-comp */}
+            <div className='flex-1 border-t border-foreground'></div>
           </div>
           {children}
         </div>

@@ -37,13 +37,13 @@ function page() {
       </Field>
 
       <Field orientation='horizontal'>
-        <Button type='submit' className='w-full '>
+        <Button type='submit' className='w-full'>
           Sign in
         </Button>
       </Field>
       <div className='self-center text-sm'>
         Already have an account?{' '}
-        <Link href={ROUTES.SIGN_UP} className='text-primary'>
+        <Link href={ROUTES.SIGN_IN} className='text-primary'>
           Sign up
         </Link>{' '}
       </div>
