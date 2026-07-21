@@ -34,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang='en' className={cn("h-full antialiased suppressHydrationWarning", "font-sans", geist.variable)}>
       <body
-        className={` ${inter.variable} ${baumans.variable} flex h-full min-h-full flex-col antialiased`}
+        className={` ${inter.variable} ${baumans.variable} flex flex-col antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme='system' enableSystem disableTransitionOnChange>
         {children}
