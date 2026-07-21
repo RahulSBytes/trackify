@@ -1,0 +1,28 @@
+import { z } from 'zod'
+
+export const SignInSchema = z.object({
+  email: z.email('Enter a valid email address.').min(1, 'Email is required'),
+  password: z
+    .string()
+    .min(6, { message: 'Password must be less than 6 characters.' })
+    .max(100, { message: 'Password cannot exceed 100 characters.' })
+})
+
+export const signUpSchema = z.object({
+  fullname: z
+    .string()
+    .min(1, 'Name is required')
+    .max(30, 'Name must not exceed 30 characters')
+    .regex(/^[a-zA-Z ]+$/, 'Name should contain letters and spaces only'),
+
+  email: z.email('Enter a valid email address.').min(1, 'Email is required'),
+
+  password: z
+    .string()
+    .min(6, 'Password must be at least 6 characters')
+    .max(100, 'Password must not exceed 100 characters')
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&^#()[\]{}\-_=+|\\:;"'<>,./~`]).+$/,
+      'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
+    )
+})
