@@ -10,7 +10,8 @@ export const dummyApplications = [
     salaryOrStipend: 12,
     portal: 'LinkedIn',
     type: 'full-time',
-    location: 'Remote'
+    location: 'Remote',
+    status: 'interviewing'
   },
   {
     _id: '64a7c1b5e4b0f9d8a1c2d3e5',
@@ -23,7 +24,8 @@ export const dummyApplications = [
     salaryOrStipend: 10,
     portal: 'Indeed',
     type: 'full-time',
-    location: 'San Francisco, CA'
+    location: 'San Francisco, CA',
+    status: 'offer_received'
   },
   {
     _id: '64a7c1b5e4b0f9d8a1c2d3e6',
@@ -36,7 +38,8 @@ export const dummyApplications = [
     salaryOrStipend: 3.6,
     portal: 'Wellfound',
     type: 'part-time',
-    location: 'Remote'
+    location: 'Remote',
+    status: 'accepted'
   },
   {
     _id: '64a7c1b5e4b0f9d8a1c2d3e7',
@@ -49,7 +52,8 @@ export const dummyApplications = [
     salaryOrStipend: 14,
     portal: 'Company Portal',
     type: 'full-time',
-    location: 'New York, NY'
+    location: 'New York, NY',
+    status: 'under_review'
   },
   {
     _id: '64a7c1b5e4b0f9d8a1c2d3e8',
@@ -62,7 +66,8 @@ export const dummyApplications = [
     salaryOrStipend: 8,
     portal: 'Upwork',
     type: 'part-time',
-    location: 'Remote'
+    location: 'Remote',
+    status: 'saved'
   },
   {
     _id: '64a7c1b5e4b0f9d8a1c2d3e9',
@@ -75,7 +80,8 @@ export const dummyApplications = [
     salaryOrStipend: 16,
     portal: 'Glassdoor',
     type: 'full-time',
-    location: 'Austin, TX'
+    location: 'Austin, TX',
+    status: 'rejected'
   },
   {
     _id: '64a7c1b5e4b0f9d8a1c2d3ea',
@@ -88,7 +94,8 @@ export const dummyApplications = [
     salaryOrStipend: 6,
     portal: 'LinkedIn',
     type: 'full-time',
-    location: 'Chicago, IL'
+    location: 'Chicago, IL',
+    status: 'applied'
   },
   {
     _id: '64a7c1b5e4b0f9d8a1c2d3eb',
@@ -101,7 +108,8 @@ export const dummyApplications = [
     salaryOrStipend: 2.4,
     portal: 'Internshala',
     type: 'part-time',
-    location: 'Remote'
+    location: 'Remote',
+    status: 'withdrawn'
   },
   {
     _id: '64a7c1b5e4b0f9d8a1c2d3ec',
@@ -114,7 +122,8 @@ export const dummyApplications = [
     salaryOrStipend: 18,
     portal: 'LinkedIn',
     type: 'full-time',
-    location: 'Seattle, WA'
+    location: 'Seattle, WA',
+    status: 'offer_received'
   },
   {
     _id: '64a7c1b5e4b0f9d8a1c2d3ed',
@@ -127,10 +136,10 @@ export const dummyApplications = [
     salaryOrStipend: 7.5,
     portal: 'Indeed',
     type: 'part-time',
-    location: 'Remote'
+    location: 'Remote',
+    status: 'interviewing'
   }
 ]
-
 
 
 

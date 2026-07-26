@@ -1,9 +1,15 @@
+import AddQuestionForm from '@/components/forms/AddQuestionForm'
 import React from 'react'
 
-function page() {
+function AddApplication() {
   return (
-    <div>page</div>
+    <main className='flex h-full w-full max-w-3xl flex-col'>
+      <h2 className='text-xl'>Applications</h2>
+      <section className='my-6 overflow-auto no-scrollbar'>
+        <AddQuestionForm />
+      </section>
+    </main>
   )
 }
 
-export default page
+export default AddApplication

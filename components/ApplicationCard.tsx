@@ -1,9 +1,10 @@
+import { ApplicationCardData } from '@/types/global'
 import Image from 'next/image'
 
 function ApplicationCard({
-  application: { role, company, dateApplied, type, logo, location }
+  application: { role, company, dateApplied, type, logo, status }
 }: {
-  application: ApplicationCard
+  application: ApplicationCardData
 }) {
   return (
     <div className='flex-between flex'>
@@ -15,7 +16,7 @@ function ApplicationCard({
           <p className='font-medium'>{role}</p>
           <p className='text-sm text-foreground-muted'>
             {`${company}  • ${type} `}{' '}
-            <span className='hidden sm:inline'>{`• ${location}`}</span>
+            <span className='hidden sm:inline'>{`• ${status}`}</span>
           </p>
         </div>
       </div>

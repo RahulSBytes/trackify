@@ -1,3 +1,4 @@
+import { APPLICATION_STATUSES } from '@/constants'
 import { z } from 'zod'
 
 export const SignInSchema = z.object({
@@ -25,4 +26,20 @@ export const signUpSchema = z.object({
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&^#()[\]{}\-_=+|\\:;"'<>,./~`]).+$/,
       'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
     )
+})
+
+
+
+
+export const applicationSchema = z.object({
+  role: z.string(),
+  dateApplied: z.string(),
+  company: z.string(),
+  location: z.string(),
+  job_description: z.string(),
+  salery_or_stipend: z.number(),
+  type: z.string(),
+  portal: z.string(),
+  status: z.enum(APPLICATION_STATUSES),
+  logo: z.string(),
 })
