@@ -8,14 +8,11 @@ type ActionResponse<T = null> = {
   status?: number
 }
 
-interface Application {
+interface ApplicationCard {
   _id: string
   role: string
-  jobDescription: string
   company: string
   dateApplied: string
-  salaryOrStipend: number
-  portal: string
   logo: string
   type: string
   location: string

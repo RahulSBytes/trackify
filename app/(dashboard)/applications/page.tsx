@@ -22,7 +22,7 @@ function Application() {
   ]
 
   return (
-    <main className='flex h-full min-h-0 flex-col'>
+    <main className='flex h-full min-h-0 w-full max-w-3xl flex-col'>
       {/* fixed part — never scrolls */}
       <h2 className='text-xl'>Applications</h2>
       <div className='mt-3 flex w-full gap-4'>
@@ -42,7 +42,7 @@ function Application() {
       </div>
 
       {/* only this scrolls */}
-      <section className='mt-3 flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto pr-2  no-scrollbar'>
+      <section className='mt-3 flex min-h-0 flex-1 flex-col gap-4 md:gap-6 overflow-y-auto pr-2 pb-2  no-scrollbar'>
         {dummyApplications.map((application) => (
           <ApplicationCard key={application._id} application={application} />
         ))}

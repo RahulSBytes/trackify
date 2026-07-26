@@ -130,3 +130,42 @@ export const dummyApplications = [
     location: 'Remote'
   }
 ]
+
+
+
+
+
+
+
+export const topCompanies = [
+  {
+    _id: '64a7c1b5e4b0f9d8a1c2d3e4',
+    company: 'Zomato',
+    logo: 'https://www.google.com/s2/favicons?domain=zomato.com&sz=128',
+    count: 6
+  },
+  {
+    _id: '64a7c1b5e4b0f9d8a1c2d3e5',
+    company: 'Figma',
+    logo: 'https://www.google.com/s2/favicons?domain=figma.com&sz=128',
+    count: 56
+  },
+  {
+    _id: '64a7c1b5e4b0f9d8a1c2d3e6',
+    company: 'OpenAI',
+    logo: 'https://www.google.com/s2/favicons?domain=openai.com&sz=128',
+    count: 107
+  },
+  {
+    _id: '64a7c1b5e4b0f9d8a1c2d3e7',
+    company: 'Cloudflare',
+    logo: 'https://www.google.com/s2/favicons?domain=cloudflare.com&sz=128',
+    count: 25
+  },
+  {
+    _id: '64a7c1b5e4b0f9d8a1c2d3e8',
+    company: 'Swiggy',
+    logo: 'https://www.google.com/s2/favicons?domain=swiggy.com&sz=128',
+    count: 81
+  }
+]
