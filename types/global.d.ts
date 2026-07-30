@@ -15,15 +15,15 @@ export type ApplicationStatus = (typeof APPLICATION_STATUSES)[number]
 interface Application {
   _id: string
   role: string
-  dateApplied: string | null
+  date_applied: string | null
   company: string
   location: string
   mode: string
   job_description: string
-  salery_or_stipend: string
+  salary_or_stipend: string
   type: string
   portal: string
-  applicationUrl : string
+  application_url : string
   application_deadline: string | null
   notes: string
   follow_up_date: string | null

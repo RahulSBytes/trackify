@@ -37,21 +37,21 @@ export default function AddApplicationForm({
   const form = useForm<z.infer<typeof applicationSchema>>({
     resolver: zodResolver(applicationSchema),
     defaultValues: {
-      role: '',
-      date_applied: '',
-      company: '',
-      location: '',
-      job_description: '',
-      salary_or_stipend: '',
-      mode: 'onsite',
-      type: 'full_time',
-      portal: '',
-      application_deadline: '',
-      notes: '',
-      application_url: '',
-      follow_up_date: '',
-      status: 'applied',
-      logo: ''
+      role: application?.role ||'',
+      date_applied: application?.date_applied ||'',
+      company: application?.company ||'',
+      location:  application?.location ||'',
+      job_description: application?.job_description ||'',
+      salary_or_stipend: application?.salary_or_stipend ||'',
+      mode: application?.mode || 'onsite',
+      type: application?.type || 'full_time',
+      portal: application?.portal ||'',
+      application_deadline: application?.application_deadline ||'',
+      notes: application?.notes ||'',
+      application_url: application?.application_url ||'',
+      follow_up_date: application?.follow_up_date ||'',
+      status: application?.status || 'applied',
+      logo: application?.logo ||''
     }
   })
 
@@ -113,18 +113,19 @@ export default function AddApplicationForm({
 
   return (
     <Form {...form}>
-      <div className='mb-8 flex-between flex'>
+      <div className='mb-8 flex-between flex flex-col items-start gap-5 md:flex-row md:items-center'>
         <div>
-          <h2 className='text-xl'>Add job Application</h2>
+          <h2 className='pb-1 text-xl'>Add job Application</h2>
           <p className='text-sm text-foreground-muted'>
             Track new role you have applied to.
           </p>
         </div>
-        <div className='flex gap-4'>
-          <Button onClick={()=>setIsAutofillOpen(prev => !prev)}>
-            {isAutofillOpen ? "Close": "Autofill with JD"}
-            {!isAutofillOpen && <Sparkle size={8} />}
-          </Button>
+        <div className='flex flex-row-reverse gap-4'>
+          {!isAutofillOpen && (
+            <Button onClick={() => setIsAutofillOpen((prev) => !prev)}>
+              Autofill with JD <Sparkle size={7} />
+            </Button>
+          )}
           <MoreFields activeFields={activeFields} onInsert={handleInsert} />
         </div>
       </div>
@@ -132,7 +133,16 @@ export default function AddApplicationForm({
       {isAutofillOpen && (
         <div className='mb-4 flex flex-col'>
           <Textarea className='mb-3 min-h-28' />
-          <Button className='self-end px-4'>Parser</Button>
+          <div className='flex gap-3 self-end'>
+            <Button
+              variant='outline'
+              className='self-end px-4'
+              onClick={() => setIsAutofillOpen(false)}
+            >
+              Close
+            </Button>
+            <Button className='self-end px-4'>Parser</Button>
+          </div>
         </div>
       )}
       <form
