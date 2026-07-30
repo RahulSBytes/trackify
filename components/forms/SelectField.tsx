@@ -11,6 +11,8 @@ interface SelectFieldProps<T extends FieldValues> {
     value: string;
   }[];
   placeholder?: string;
+  className ?: string
+  required ?: boolean
 }
 
 export function SelectField<T extends FieldValues>({
@@ -19,15 +21,17 @@ export function SelectField<T extends FieldValues>({
   label,
   options,
   placeholder,
+  className, 
+  required,
 }: SelectFieldProps<T>) {
   return (
-    <InputField form={form} name={name} label={label}>
+    <InputField className={className} form={form} name={name} label={label} required={required}>
       {(field) => (
         <Select value={field.value} onValueChange={(value) => field.onChange(value)}>
           <SelectTrigger className="min-h-10 w-full border">
             <SelectValue placeholder={placeholder ?? `Select ${label.toLowerCase()}`} />
           </SelectTrigger>
-          <SelectContent className="mt-9">
+          <SelectContent>
             {options.map((item) => (
               <SelectItem key={item.value} value={item.value}>
                 {item.label}

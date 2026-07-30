@@ -40,32 +40,71 @@ export const JOB_MODE_OPTIONS = [
 
 
 
+export const OPTIONAL_FIELD_KEYS = [
+  'job_description',
+  'salary_or_stipend',
+  'portal',
+  'application_url',
+  'application_deadline',
+  'notes',
+  'follow_up_date',
+] as const;
+
+
+
+export const JOB_PORTALS_UI = [
+  { label: "LinkedIn", value: "linkedin" },
+  { label: "Naukri", value: "naukri" },
+  { label: "Indeed", value: "indeed" },
+  { label: "Wellfound", value: "wellfound" },
+  { label: "Instahyre", value: "instahyre" },
+  { label: "Glassdoor", value: "glassdoor" },
+  { label: "Company Careers", value: "company_careers" },
+  { label: "Referral", value: "referral" },
+  { label: "Internshala", value: "internshala" },
+  { label: "Foundit", value: "foundit" },
+  { label: "Cutshort", value: "cutshort" },
+  { label: "Upwork", value: "upwork" },
+  { label: "Toptal", value: "toptal" },
+  { label: "AngelList", value: "angellist" },
+  { label: "Other", value: "other" },
+] as const;
+
+
+
 export const FIELD_INFO = [
   {
+    key: 'job_description',
     label: 'Job Description',
     description: 'Paste the role summary, responsibilities, or requirements from the posting for quick reference later.',
   },
   {
+    key: 'salary_or_stipend',
     label: 'Salary / Stipend',
     description: 'Accepts shorthand like 12k, 15L, 2Cr, or a range like 25k-45k. Leave blank if undisclosed.',
   },
   {
+    key: 'portal',
     label: 'Portal',
     description: 'Where you found this job — LinkedIn, Naukri, Indeed, Referral, or paste the posting URL directly.',
   },
   {
+    key: 'application_url',
     label: 'Application URL',
     description: 'Link to the original job posting, so you can revisit it anytime without searching again.',
   },
   {
+    key: 'application_deadline',
     label: 'Application Deadline',
     description: 'Last date to apply, if mentioned in the posting. Helps prioritize time-sensitive applications.',
   },
   {
+    key: 'notes',
     label: 'Notes',
     description: 'Jot down anything worth remembering — recruiter details, referral info, or things to ask in the interview.',
   },
   {
+    key: 'follow_up_date',
     label: 'Follow-up Date',
     description: 'Set a reminder date to check in on your application if you haven\'t heard back.',
   },

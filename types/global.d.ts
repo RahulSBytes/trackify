@@ -1,4 +1,4 @@
-import { APPLICATION_STATUSES } from '@/constants'
+import { APPLICATION_STATUSES, FIELD_INFO } from '@/constants'
 
 type ActionResponse<T = null> = {
   success: boolean
@@ -18,11 +18,15 @@ interface Application {
   dateApplied: string | null
   company: string
   location: string
-  mode : string,
+  mode: string
   job_description: string
   salery_or_stipend: string
   type: string
   portal: string
+  applicationUrl : string
+  application_deadline: string | null
+  notes: string
+  follow_up_date: string | null
   status: ApplicationStatus
   logo: string
 }
@@ -31,3 +35,7 @@ type ApplicationCardData = Omit<
   Application,
   'job_description' | 'location' | 'salery_or_stipend' | 'portal' | 'location'
 >
+
+
+
+type OptionalFieldKey = typeof FIELD_INFO[number]['key'];

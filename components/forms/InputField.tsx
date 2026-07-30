@@ -12,7 +12,8 @@ interface InputFieldProps<T extends FieldValues> {
   form: UseFormReturn<T>
   name: Path<T>
   label: string
-  className ?: string
+  className?: string
+  required ?: boolean
 }
 
 export default function InputField<T extends FieldValues>({
@@ -20,7 +21,8 @@ export default function InputField<T extends FieldValues>({
   form,
   name,
   label,
-  className
+  className,
+  required = false
 }: InputFieldProps<T>) {
   return (
     <>
@@ -28,11 +30,11 @@ export default function InputField<T extends FieldValues>({
         control={form.control}
         name={name}
         render={({ field }) => (
-          <FormItem className={`flex w-full flex-col gap-0 ${className}`}>
-            <FormLabel className='text-base mb-2'>
-              {label}
+          <FormItem className={`flex w-full flex-col ${className}`}>
+            <FormLabel className='text-base'>
+              {label} {required && <span className='text-destructive'>*</span>}
             </FormLabel>
-            <FormControl className=''>{children(field)}</FormControl>
+            <FormControl>{children(field)}</FormControl>
           </FormItem>
         )}
       />

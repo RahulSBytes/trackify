@@ -20,12 +20,32 @@ import {
 } from '../ui/field'
 import { Checkbox } from '../ui/checkbox'
 import { FIELD_INFO } from '@/constants'
+import { useState } from 'react'
+import { OptionalFieldKey } from '@/types/global'
 
-export default function MoreFields() {
+export default function MoreFields({
+  activeFields,
+  onInsert
+}: {
+  activeFields: Set<OptionalFieldKey>
+  onInsert: (fields: Set<OptionalFieldKey>) => void
+}) {
+  const [draft, setDraft] = useState<Set<OptionalFieldKey>>(
+    new Set(activeFields)
+  )
+
+  const toggle = (key: OptionalFieldKey) => {
+    setDraft((prev) => {
+      const next = new Set(prev)
+      next.has(key) ? next.delete(key) : next.add(key)
+      return next
+    })
+  }
+
   return (
-    <Drawer>
+    <Drawer onOpenChange={(open) => open && setDraft(new Set(activeFields))}>
       <DrawerTrigger asChild>
-        <Button variant='secondary'>Open Drawer</Button>
+        <Button variant='secondary'>Add more fields</Button>
       </DrawerTrigger>
       <DrawerContent className='flex max-h-[85vh] flex-col px-10'>
         <DrawerHeader>
@@ -35,16 +55,16 @@ export default function MoreFields() {
           </DrawerDescription>
         </DrawerHeader>
 
-        <div className='min-h-0 flex-1 overflow-y-auto p-4 custom-scrollbar'>
+        <div className='custom-scrollbar min-h-0 flex-1 overflow-y-auto p-4'>
           <FieldSet>
             <FieldLegend variant='label'>Additional fields</FieldLegend>
             <FieldDescription>
               Select the fields you'd like to add to this application.
             </FieldDescription>
             <FieldGroup className='grid grid-cols-1 gap-3 md:grid-cols-2'>
-              {FIELD_INFO.map(({ label, description }) => (
+              {FIELD_INFO.map(({ label,key, description }) => (
                 <Field
-                  key={label}
+                  key={key}
                   orientation='horizontal'
                   className='max-h-xl'
                 >
@@ -52,6 +72,8 @@ export default function MoreFields() {
                     id={`checkbox-${label}`}
                     name={`checkbox-${label}`}
                     className='self-start'
+                    checked={draft.has(key)}
+                    onCheckedChange={() => toggle(key)}
                   />
                   <div>
                     <FieldLabel
@@ -69,7 +91,9 @@ export default function MoreFields() {
         </div>
 
         <DrawerFooter className='shrink-0'>
-          <Button>Insert</Button>
+          <DrawerClose asChild>
+            <Button onClick={() => onInsert(draft)}>Update</Button>
+          </DrawerClose>
           <DrawerClose asChild>
             <Button>Close</Button>
           </DrawerClose>

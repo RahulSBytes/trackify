@@ -30,13 +30,17 @@ export const signUpSchema = z.object({
 
 export const applicationSchema = z.object({
   role: z.string(),
-  dateApplied: z.string(),
+  date_applied: z.string(),
+  application_deadline: z.string(),
+  notes: z.string(),
+  follow_up_date: z.string(),
   company: z.string(),
-  mode : z.string(),
+  mode: z.string(),
   location: z.string(),
   job_description: z.string(),
-  salery_or_stipend: z.string(),
+  salary_or_stipend: z.string(),
   type: z.string(),
+  application_url :  z.string(),
   portal: z.string(),
   status: z.enum(APPLICATION_STATUSES),
   logo: z.string()
