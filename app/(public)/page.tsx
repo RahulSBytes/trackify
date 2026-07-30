@@ -42,20 +42,20 @@ function page() {
         className='absolute right-0 -bottom-7.5 h-64 w-auto opacity-70'
       />
 
-      <div className='relative -bottom-28 gap-[13vw] hidden md:flex'>
+      <div className='relative -bottom-28 hidden gap-[13vw] md:flex'>
         <Image
           src='/images/home-img-dark.svg'
           alt='preview'
           width={0}
           height={0}
-          className='relative right-0 -bottom-5 h-36 w-auto opacity-70 border'
+          className='relative right-0 -bottom-5 h-36 w-auto border opacity-70'
         />
         <Image
           src='/images/form-img-dark.svg'
           alt='preview'
           width={0}
           height={0}
-          className='relative -bottom-5 border h-36 w-auto opacity-70'
+          className='relative -bottom-5 h-36 w-auto border opacity-70'
         />
       </div>
     </section>

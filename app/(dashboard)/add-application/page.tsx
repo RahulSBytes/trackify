@@ -1,4 +1,4 @@
-import AddQuestionForm from '@/components/forms/AddQuestionForm'
+import AddQuestionForm from '@/components/forms/AddApplicationForm'
 import React from 'react'
 
 function AddApplication() {

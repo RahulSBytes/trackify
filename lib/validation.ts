@@ -28,18 +28,16 @@ export const signUpSchema = z.object({
     )
 })
 
-
-
-
 export const applicationSchema = z.object({
   role: z.string(),
   dateApplied: z.string(),
   company: z.string(),
+  mode : z.string(),
   location: z.string(),
   job_description: z.string(),
-  salery_or_stipend: z.number(),
+  salery_or_stipend: z.string(),
   type: z.string(),
   portal: z.string(),
   status: z.enum(APPLICATION_STATUSES),
-  logo: z.string(),
+  logo: z.string()
 })
