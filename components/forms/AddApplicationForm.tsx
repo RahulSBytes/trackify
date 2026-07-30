@@ -10,7 +10,7 @@ import { Form } from '../ui/form'
 import { Textarea } from '@/components/ui/textarea'
 import { Input } from '../ui/input'
 import { applicationSchema } from '@/lib/validation'
-import { RotateCw } from 'lucide-react'
+import { RotateCw, Sparkle } from 'lucide-react'
 import { Application, OptionalFieldKey } from '@/types/global'
 import {
   APPLICATION_STATUSES_UI,
@@ -58,6 +58,8 @@ export default function AddApplicationForm({
   const [activeFields, setActiveFields] = useState<Set<OptionalFieldKey>>(
     new Set()
   )
+
+  const [isAutofillOpen, setIsAutofillOpen] = useState(false)
 
   const handleCreateQuestion = async (
     data: z.infer<typeof applicationSchema>
@@ -112,10 +114,27 @@ export default function AddApplicationForm({
   return (
     <Form {...form}>
       <div className='mb-8 flex-between flex'>
-        <h2 className='text-xl'>Applications</h2>
-        <MoreFields activeFields={activeFields} onInsert={handleInsert} />
+        <div>
+          <h2 className='text-xl'>Add job Application</h2>
+          <p className='text-sm text-foreground-muted'>
+            Track new role you have applied to.
+          </p>
+        </div>
+        <div className='flex gap-4'>
+          <Button onClick={()=>setIsAutofillOpen(prev => !prev)}>
+            {isAutofillOpen ? "Close": "Autofill with JD"}
+            {!isAutofillOpen && <Sparkle size={8} />}
+          </Button>
+          <MoreFields activeFields={activeFields} onInsert={handleInsert} />
+        </div>
       </div>
 
+      {isAutofillOpen && (
+        <div className='mb-4 flex flex-col'>
+          <Textarea className='mb-3 min-h-28' />
+          <Button className='self-end px-4'>Parser</Button>
+        </div>
+      )}
       <form
         className='flex w-full flex-col gap-6 overflow-y-auto'
         onSubmit={form.handleSubmit(handleCreateQuestion)}
