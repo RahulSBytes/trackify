@@ -1,11 +1,12 @@
 "use client"
-import { signIn } from '@/auth'
+import { signIn } from 'next-auth/react';
 import { Button } from '../ui/button'
 import Image from 'next/image'
 import { toast } from 'sonner'
 import ROUTES from '@/constants/routes'
 
 function SocialAuth() {
+
   async function handleSubmit(provider: 'github' | 'google') {
     try {
       await signIn(provider, {

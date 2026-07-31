@@ -14,7 +14,7 @@ function RightSidebar() {
   }
 
   return (
-    <aside className='h-full w-[30vw] min-w-56 border-l-2 p-2 py-5  flex-col hidden md:flex'>
+    <aside className='h-full w-[30vw] min-w-56 border-l-2 p-2 py-5  flex-col hidden md:flex px-4'>
       <div className='h-fit mb-6'>
         <h2 className='text-lg'>Top companies</h2>
         <div className='flex flex-col gap-4 py-4 px-2'>
