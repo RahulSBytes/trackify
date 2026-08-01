@@ -6,4 +6,136 @@ datasource db {
   provider = "postgresql"
 }
 
-// your models go here (User, Application, enums, etc.)
+// ================= Enums =================
+
+enum ApplicationStatus {
+  wishlist
+  applied
+  under_review
+  interviewing
+  offer_received
+  accepted
+  rejected
+  withdrawn
+}
+
+enum JobType {
+  full_time
+  part_time
+  internship
+  contract
+  freelance
+  volunteer
+  other
+}
+
+enum JobMode {
+  remote
+  onsite
+  hybrid
+}
+
+enum ApplicationPortal {
+  linkedin
+  naukri
+  indeed
+  wellfound
+  instahyre
+  glassdoor
+  company_careers
+  referral
+  internshala
+  foundit
+  cutshort
+  upwork
+  toptal
+  angellist
+  other
+}
+
+enum SalaryPeriod {
+  monthly
+  annual
+}
+
+enum Currency {
+  inr
+  usd
+  eur
+  gbp
+  cad
+  aud
+  sgd
+  aed
+}
+
+// ================= Models =================
+
+model User {
+  id           String        @id @default(cuid())
+  email        String        @unique
+  name         String
+  username     String
+  applications Application[]
+  accounts     Account[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Account {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  name              String
+  image             String?
+  password          String?
+  provider          String
+  providerAccountId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+  @@map("accounts")
+}
+
+model Application {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  role    String
+  company String
+  type    JobType
+  logo    String?
+
+  status ApplicationStatus @default(applied)
+
+  mode     JobMode?
+  location String?
+
+  salaryMin       Int?
+  salaryMax       Int?
+  salaryCurrency  Currency?
+  salaryPeriod    SalaryPeriod?
+  salaryDisclosed Boolean       @default(false)
+
+  portal         String?
+  applicationUrl String?
+
+  dateApplied         DateTime? @db.Date
+  applicationDeadline DateTime? @db.Date
+  followUpDate        DateTime? @db.Date
+
+  jobDescription String?
+  notes          String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, status])
+  @@index([userId, createdAt])
+  @@map("applications")
+}

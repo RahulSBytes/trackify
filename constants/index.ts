@@ -20,6 +20,17 @@ export const APPLICATION_STATUSES_UI = [
   { label: 'Withdrawn', value: 'withdrawn' }
 ] as const
 
+export const CURRENCY_OPTIONS = [
+  { label: "Indian Rupee (₹)", value: "inr" },
+  { label: "US Dollar ($)", value: "usd" },
+  { label: "Euro (€)", value: "eur" },
+  { label: "British Pound (£)", value: "gbp" },
+  { label: "Canadian Dollar (C$)", value: "cad" },
+  { label: "Australian Dollar (A$)", value: "aud" },
+  { label: "Singapore Dollar (S$)", value: "sgd" },
+  { label: "UAE Dirham (د.إ)", value: "aed" },
+] as const;
+
 export const JOB_TYPE_OPTIONS = [
   { label: 'Full-time', value: 'full-time' },
   { label: 'Part-time', value: 'part-time' },

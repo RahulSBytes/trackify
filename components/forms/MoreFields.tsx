@@ -95,7 +95,7 @@ export default function MoreFields({
             <Button onClick={() => onInsert(draft)}>Update</Button>
           </DrawerClose>
           <DrawerClose asChild>
-            <Button>Close</Button>
+            <Button variant="outline">Close</Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
