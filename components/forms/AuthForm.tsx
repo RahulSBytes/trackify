@@ -21,6 +21,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
+import { ActionResponse } from '@/types/global'
 
 interface AuthFormProps<T extends FieldValues> {
   FormType: 'SIGN_IN' | 'SIGN_UP'

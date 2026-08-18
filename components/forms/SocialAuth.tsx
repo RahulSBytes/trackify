@@ -13,6 +13,10 @@ function SocialAuth() {
         callbackUrl: ROUTES.HOME,
         redirect: true
       })
+
+
+    
+
     } catch (error) {
       toast.error('Sign in failed', {
         description:

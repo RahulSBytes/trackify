@@ -1,8 +1,13 @@
+import { auth } from '@/auth'
 import Navbar from '@/components/navigation/navbar/Navbar'
 import RightSidebar from '@/components/RightSidebar'
 import React, { ReactNode } from 'react'
 
-function layout({ children }: { children: ReactNode }) {
+async function layout({ children }: { children: ReactNode }) {
+
+ const session = await auth()
+     console.log("session ::",session)
+
   return (
     <main className='flex h-screen flex-col overflow-hidden'>
       <Navbar />
