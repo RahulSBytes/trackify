@@ -1,4 +1,4 @@
-class RequestError extends Error {
+export class RequestError extends Error {
   statusCode: number
   errors?: Record<string, string[]>
   constructor(
