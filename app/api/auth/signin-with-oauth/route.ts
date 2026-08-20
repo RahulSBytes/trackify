@@ -1,11 +1,10 @@
 import { prisma } from '@/lib/prisma'
-import slugify from 'slugify'
 import { NextResponse } from 'next/server'
-import { ValidationError } from '@/lib/errors'
-import { handleError } from '@/lib/handlers/error'
 import { SignInWithOAuthSchema } from '@/lib/validation'
 import { APIErrorResponse } from '@/types/global'
 import z from 'zod'
+import { ValidationError } from '@/lib/http-errors'
+import handleError from '@/lib/handlers/error'
 
 export async function POST(request: Request) {
   const { provider, providerAccountId, user } = await request.json()
@@ -22,25 +21,19 @@ export async function POST(request: Request) {
       throw new ValidationError(fieldErrors)
     }
 
-    const { name, username, email, image } = user
-
-    const slugifiedUsername = slugify(username, {
-      lower: true,
-      strict: true,
-      trim: true
-    })
+    const { fullname, email, image } = user
 
     await prisma.$transaction(async (tx) => {
       let existingUser = await tx.user.findUnique({ where: { email } })
 
       if (!existingUser) {
         existingUser = await tx.user.create({
-          data: { name, username: slugifiedUsername, email, image }
+          data: { fullname, email, image }
         })
       } else {
-        const updateData: { name?: string; image?: string } = {}
+        const updateData: { fullname?: string; image?: string } = {}
 
-        if (existingUser.name !== name) updateData.name = name
+        if (existingUser.fullname !== fullname) updateData.fullname = fullname
         if (existingUser.image !== image) updateData.image = image
 
         if (Object.keys(updateData).length > 0) {
@@ -58,7 +51,7 @@ export async function POST(request: Request) {
         update: {},
         create: {
           userId: existingUser.id,
-          name,
+          fullname,
           image,
           provider,
           providerAccountId

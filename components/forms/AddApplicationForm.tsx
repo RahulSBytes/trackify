@@ -38,18 +38,18 @@ export default function AddApplicationForm({
     resolver: zodResolver(applicationSchema),
     defaultValues: {
       role: application?.role ||'',
-      date_applied: application?.date_applied ||'',
+      dateApplied: application?.dateApplied ||'',
       company: application?.company ||'',
       location:  application?.location ||'',
-      job_description: application?.job_description ||'',
-      salary_or_stipend: application?.salary_or_stipend ||'',
+      jobDescription: application?.jobDescription ||'',
+      salaryOrStipend: application?.salaryOrStipend ||'',
       mode: application?.mode || 'onsite',
       type: application?.type || 'full_time',
       portal: application?.portal ||'',
-      application_deadline: application?.application_deadline ||'',
+      applicationDeadline: application?.applicationDeadline ||'',
       notes: application?.notes ||'',
-      application_url: application?.application_url ||'',
-      follow_up_date: application?.follow_up_date ||'',
+      applicationUrl: application?.applicationUrl ||'',
+      followUpDate: application?.followUpDate ||'',
       status: application?.status || 'applied',
       logo: application?.logo ||''
     }
@@ -65,7 +65,7 @@ export default function AddApplicationForm({
     data: z.infer<typeof applicationSchema>
   ) => {
     startTransition(async () => {
-      console.log(data)
+      console.log("form data :: ",data)
 
       // if (isEdit && application) {
       //   const result = await editQuestion({
@@ -178,7 +178,7 @@ export default function AddApplicationForm({
           <InputField
             className={form.watch('status') !== 'wishlist' ? 'flex' : 'hidden'}
             form={form}
-            name='date_applied'
+            name='dateApplied'
             label='Date applied'
           >
             {(field) => (
@@ -205,10 +205,10 @@ export default function AddApplicationForm({
           </InputField>
         </div>
 
-        {activeFields.has('job_description') && (
+        {activeFields.has('jobDescription') && (
           <InputField
             form={form}
-            name='job_description'
+            name='jobDescription'
             label='Job description'
           >
             {(field) => (
@@ -223,10 +223,10 @@ export default function AddApplicationForm({
           </InputField>
         )}
 
-        {activeFields.has('salary_or_stipend') && (
+        {activeFields.has('salaryOrStipend') && (
           <InputField
             form={form}
-            name='salary_or_stipend'
+            name='salaryOrStipend'
             label='Salary / stipend'
           >
             {(field) => (
@@ -249,10 +249,10 @@ export default function AddApplicationForm({
             />
           )}
 
-          {activeFields.has('application_url') && (
+          {activeFields.has('applicationUrl') && (
             <InputField
               form={form}
-              name='application_url'
+              name='applicationUrl'
               label='Application Url'
             >
               {(field) => (
@@ -264,10 +264,10 @@ export default function AddApplicationForm({
           )}
         </div>
 
-        {activeFields.has('application_deadline') && (
+        {activeFields.has('applicationDeadline') && (
           <InputField
             form={form}
-            name='application_deadline'
+            name='applicationDeadline'
             label='Application deadline'
           >
             {(field) => (
@@ -276,8 +276,8 @@ export default function AddApplicationForm({
           </InputField>
         )}
 
-        {activeFields.has('follow_up_date') && (
-          <InputField form={form} name='follow_up_date' label='Follow-up date'>
+        {activeFields.has('followUpDate') && (
+          <InputField form={form} name='followUpDate' label='Follow-up date'>
             {(field) => (
               <Input {...field} className='min-h-10 border' type='date' />
             )}

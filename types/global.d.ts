@@ -20,27 +20,27 @@ type APIResponse<T = null> = NextResponse<SuccessResponse<T> | ErrorResponse>;
 export type ApplicationStatus = (typeof APPLICATION_STATUSES)[number]
 
 interface Application {
-  _id: string
+  id: string
   role: string
-  date_applied: string | null
+  dateApplied: string | null
   company: string
   location: string
   mode: string
-  job_description: string
-  salary_or_stipend: string
+  jobDescription: string
+  salaryOrStipend: string
   type: string
   portal: string
-  application_url : string
-  application_deadline: string | null
+  applicationUrl : string
+  applicationDeadline: string | null
   notes: string
-  follow_up_date: string | null
+  followUpDate: string | null
   status: ApplicationStatus
   logo: string
 }
 
 type ApplicationCardData = Omit<
   Application,
-  'job_description' | 'location' | 'salery_or_stipend' | 'portal' | 'location'
+  'jobDescription' | 'location' | 'saleryOrStipend' | 'portal' | 'location'
 >
 
 

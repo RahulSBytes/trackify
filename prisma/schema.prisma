@@ -74,9 +74,8 @@ enum Currency {
 model User {
   id           String        @id @default(cuid())
   email        String        @unique
-  name         String
-  image        String
-  username     String
+  fullname     String
+  image        String?
   applications Application[]
   accounts     Account[]
   createdAt    DateTime      @default(now())
@@ -84,18 +83,15 @@ model User {
 }
 
 model Account {
-  id                String @id @default(cuid())
+  id                String   @id @default(cuid())
   userId            String
-  user              User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  name              String
-  image             String?
-  password          String?
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   provider          String
   providerAccountId String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  image             String?
+  password          String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
   @@unique([provider, providerAccountId])
   @@index([userId])

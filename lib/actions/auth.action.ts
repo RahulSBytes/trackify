@@ -1,114 +1,117 @@
+import { ActionResponse, ErrorResponse } from '@/types/global'
+import { SignInSchema, signUpSchema } from '../validation'
+import handleError from '../handlers/error'
+import bcrypt from 'bcrypt'
+import { NotFoundError } from '../http-errors'
+import { prisma } from '../prisma'
+import { signIn } from '@/auth'
+import action from '../handlers/action'
+
 export async function signInWithCredentials(
-  params: Pick<AuthCredentials, "email" | "password">
+  params: Pick<AuthCredentials, 'email' | 'password'>
 ): Promise<ActionResponse> {
   const validationResult = await action({
     params,
-    schema: SignInSchema,
-  });
+    schema: SignInSchema
+  })
 
   if (validationResult instanceof Error) {
-    return handleError(validationResult) as ErrorResponse;
+    return handleError(validationResult) as ErrorResponse
   }
 
-  const { email, password } = validationResult.params!;
+  const { email, password } = validationResult.params!
 
   try {
-    const existingUser = await User.findOne({ email });
-    if (!existingUser) throw new NotFoundError("User");
+    const existingUser = await prisma.user.findFirst({
+      where: {
+        email
+      }
+    })
 
-    const existingAccount = await Account.findOne({
-      provider: "credentials",
-      providerAccountId: email,
-    });
-    if (!existingAccount) throw new NotFoundError("Account");
+    if (!existingUser) throw new NotFoundError('User')
+
+    const existingAccount = await prisma.account.findFirst({
+      where: {
+        provider: 'credentials',
+        providerAccountId: email
+      }
+    })
+    if (!existingAccount) throw new NotFoundError('Account')
 
     const passwordMatch = await bcrypt.compare(
       password,
-      existingAccount.password
-    );
-    if (!passwordMatch) throw new Error("Invalid password");
+      existingAccount.password as string
+    )
 
-    await signIn("credentials", {
+    if (!passwordMatch) throw new Error('Invalid password')
+
+    await signIn('credentials', {
       email,
       password,
-      redirect: false,
-    });
+      redirect: false
+    })
 
-    return { success: true };
+    return { success: true }
   } catch (error) {
-    console.log("signInWithCredentials error hu :: ", error);
-
-    return handleError(error) as ErrorResponse;
+    return handleError(error) as ErrorResponse
   }
 }
-
-
-
 
 export async function signUpWithCredentials(
   params: AuthCredentials
 ): Promise<ActionResponse> {
   const validationResult = await action({
     params,
-    schema: signUpSchema,
-  });
+    schema: signUpSchema
+  })
 
   if (validationResult instanceof Error) {
-    return handleError(validationResult) as ErrorResponse;
+    return handleError(validationResult) as ErrorResponse
   }
 
-  const { name, username, email, password } = validationResult.params!;
-
-  const session = await mongoose.startSession();
-  session.startTransaction();
+  const { fullname, email, password } = validationResult.params!
 
   try {
-    const existingUser = await User.findOne({ email }).session(session);
-    if (existingUser) throw new Error("User already exists");
+    await prisma.$transaction(async (tx) => {
+      const existingUser = await tx.user.findUnique({
+        where: {
+          email
+        }
+      })
 
-    const existingUsername = await User.findOne({ username }).session(session);
-    if (existingUsername) throw new Error("Username already exists");
+      if (existingUser) throw new Error('User already exists')
 
-    const hashedPassword = await bcrypt.hash(password, 12);
+      const hashedPassword = await bcrypt.hash(password, 12)
 
-    const [newUser] = await User.create([{ username, name, email }], {
-      session,
-    });
+      const newUser = await tx.user.create({
+        data: {
+          fullname,
+          email,
+          password: hashedPassword
+        }
+      })
 
-    await Account.create(
-      [
-        {
-          userId: newUser._id,
-          name,
-          provider: "credentials",
-          providerAccountId: email,
-          password: hashedPassword,
-        },
-      ],
-      { session }
-    );
-
-    await session.commitTransaction();
+      await tx.account.create({
+        data: {
+          userId: newUser.id,
+          provider: 'credentials',
+          providerAccountId: email
+        }
+      })
+    })
   } catch (error) {
-    if (session.inTransaction()) {
-      await session.abortTransaction();
-    }
-
-    return handleError(error) as ErrorResponse;
-  } finally {
-    await session.endSession();
+    return handleError(error) as ErrorResponse
   }
 
   try {
-    await signIn("credentials", {
+    await signIn('credentials', {
       email,
       password,
-      redirect: false,
-    });
+      redirect: false
+    })
   } catch (error) {
-    console.log("signIn after signup failed ::", error);
-    return handleError(error) as ErrorResponse;
+    return handleError(error) as ErrorResponse
   }
 
-  return { success: true };
+  return { success: true }
 }

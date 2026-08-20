@@ -41,10 +41,10 @@ function Application() {
         </Select>
       </div>
 
-      <section className='mt-3 no-scrollbar flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto pr-2 pb-2 md:gap-6'>
+      <section className='mt-3 no-scrollbar flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto pr-2 pb-3 md:gap-6'>
         {dummyApplications.map((application) => (
           <ApplicationCard
-            key={application._id}
+            key={application.id}
             application={application as ApplicationCardData}
           />
         ))}

@@ -3,8 +3,14 @@ import Link from 'next/link'
 import Theme from './Theme'
 import { Button } from '@/components/ui/button'
 import ROUTES from '@/constants/routes'
+import { auth, signOut } from '@/auth'
 
-function Navbar() {
+async function Navbar() {
+  const session = await auth()
+  // const userId = session?.user?.id;
+
+  console.log(session);
+
   return (
     <nav className='flex-between p-4'>
       <Link href='/' className='flex'>
@@ -16,12 +22,30 @@ function Navbar() {
 
       <div className='flex gap-3'>
         <Theme />
-        <Button variant='ghost' size='sm'>
-          <Link href={ROUTES.SIGN_IN}>Log in</Link>
-        </Button>
-        <Button className='text-white'>
-          <Link href={ROUTES.SIGN_UP}>Sign up</Link>
-        </Button>
+        {!session ? (
+          <div>
+            <Button variant='ghost' size='sm'>
+              <Link href={ROUTES.SIGN_IN}>Log in</Link>
+            </Button>
+            <Button className='text-white'>
+              <Link href={ROUTES.SIGN_UP}>Sign up</Link>
+            </Button>
+          </div>
+        ) : (
+          <form
+            action={async () => {
+              "use server";
+              await signOut();
+            }}
+          >
+            <Button
+              type="submit"
+              variant='outline' size='sm'
+            >
+                Log out
+            </Button>
+          </form>
+        )}
       </div>
     </nav>
   )

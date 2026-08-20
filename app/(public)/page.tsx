@@ -2,9 +2,9 @@ import { Button } from '@/components/ui/button'
 import ROUTES from '@/constants/routes'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
 
-function page() {
+async function page() {
+
   return (
     <section className='relative flex-center flex flex-1 flex-col gap-4 overflow-hidden'>
       <h3 className='text-xl font-medium text-foreground'>

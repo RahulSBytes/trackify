@@ -1,12 +1,14 @@
 import { auth } from '@/auth'
 import Navbar from '@/components/navigation/navbar/Navbar'
 import RightSidebar from '@/components/RightSidebar'
+import ROUTES from '@/constants/routes';
+import { redirect } from 'next/navigation';
 import React, { ReactNode } from 'react'
 
 async function layout({ children }: { children: ReactNode }) {
 
- const session = await auth()
-     console.log("session ::",session)
+const session = await auth();
+if (!session) redirect(ROUTES.SIGN_IN);
 
   return (
     <main className='flex h-screen flex-col overflow-hidden'>
