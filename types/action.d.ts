@@ -8,3 +8,4 @@ interface signUpSchema {
     email : string,
     password : string
 }
+

@@ -9,7 +9,7 @@ import { Button } from '../ui/button'
 import { Form } from '../ui/form'
 import { Textarea } from '@/components/ui/textarea'
 import { Input } from '../ui/input'
-import { applicationSchema } from '@/lib/validation'
+import { applicationSchema, CreateApplicationInput } from '@/lib/validation'
 import { RotateCw, Sparkle } from 'lucide-react'
 import { Application, OptionalFieldKey } from '@/types/global'
 import {
@@ -21,11 +21,17 @@ import {
 import InputField from './InputField'
 import { SelectField } from './SelectField'
 import MoreFields from './MoreFields'
+import { createApplication } from '@/lib/actions/application.action'
+import ROUTES from '@/constants/routes'
+import router from 'next/router'
+import { toast } from 'sonner'
+import { cleanEmptyStrings } from '@/lib/utils'
 
 interface Params {
   application?: Application
   isEdit?: boolean
 }
+
 
 export default function AddApplicationForm({
   application,
@@ -37,21 +43,21 @@ export default function AddApplicationForm({
   const form = useForm<z.infer<typeof applicationSchema>>({
     resolver: zodResolver(applicationSchema),
     defaultValues: {
-      role: application?.role ||'',
-      dateApplied: application?.dateApplied ||'',
-      company: application?.company ||'',
-      location:  application?.location ||'',
-      jobDescription: application?.jobDescription ||'',
-      salaryOrStipend: application?.salaryOrStipend ||'',
+      role: application?.role || '',
+      dateApplied: application?.dateApplied || '',
+      company: application?.company || '',
+      location: application?.location || '',
+      jobDescription: application?.jobDescription || '',
+      salaryOrStipend: application?.salaryOrStipend || '',
       mode: application?.mode || 'onsite',
       type: application?.type || 'full_time',
-      portal: application?.portal ||'',
-      applicationDeadline: application?.applicationDeadline ||'',
-      notes: application?.notes ||'',
-      applicationUrl: application?.applicationUrl ||'',
-      followUpDate: application?.followUpDate ||'',
+      portal: application?.portal || '',
+      applicationDeadline: application?.applicationDeadline || '',
+      notes: application?.notes || '',
+      applicationUrl: application?.applicationUrl || '',
+      followUpDate: application?.followUpDate || '',
       status: application?.status || 'applied',
-      logo: application?.logo ||''
+      logo: application?.logo || ''
     }
   })
 
@@ -61,11 +67,12 @@ export default function AddApplicationForm({
 
   const [isAutofillOpen, setIsAutofillOpen] = useState(false)
 
+
   const handleCreateQuestion = async (
-    data: z.infer<typeof applicationSchema>
+    data: CreateApplicationInput
   ) => {
     startTransition(async () => {
-      console.log("form data :: ",data)
+    
 
       // if (isEdit && application) {
       //   const result = await editQuestion({
@@ -87,20 +94,22 @@ export default function AddApplicationForm({
       //   }
       //   return
       // }
-      //   const result = await createQuestion(data)
-      //   if (result.success) {
-      //     toast({
-      //       title: 'Success',
-      //       description: 'Your question has been posted successfully.'
-      //     })
-      //     if (result.data) router.push(ROUTES.QUESTION(result.data._id))
-      //   } else {
-      //     toast({
-      //       title: `Error (${result.status})`,
-      //       description: result.error?.message,
-      //       variant: 'destructive'
-      //     })
-      //   }
+
+      const result = await createApplication(data);
+
+      if (result.success) {
+        toast({
+          title: 'Success',
+          description: 'Your question has been posted successfully.'
+        })
+        if (result.data) router.push(ROUTES.QUESTION(result.data._id))
+      } else {
+        toast({
+          title: `Error (${result.status})`,
+          description: result.error?.message,
+          variant: 'destructive'
+        })
+      }
     })
   }
 
@@ -206,11 +215,7 @@ export default function AddApplicationForm({
         </div>
 
         {activeFields.has('jobDescription') && (
-          <InputField
-            form={form}
-            name='jobDescription'
-            label='Job description'
-          >
+          <InputField form={form} name='jobDescription' label='Job description'>
             {(field) => (
               <Textarea id='job_description' className='min-h-28' {...field} />
             )}

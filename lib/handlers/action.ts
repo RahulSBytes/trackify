@@ -1,47 +1,39 @@
-"use server";
+'use server'
 
-import { Session } from "next-auth";
-import z, { ZodError, ZodType } from "zod";
-
-import { auth } from "@/auth";
-
-import { UnauthorizedError, ValidationError } from "../http-errors";
+import z, { ZodError, ZodSchema } from 'zod'
+import type { Session } from 'next-auth'
+import { auth } from '@/auth'
+import { UnauthorizedError, ValidationError } from '../http-errors'
 
 type ActionOptions<T> = {
-  params?: T;
-  schema?: ZodType<T>;
-  authorize?: boolean;
-};
-
-async function action<T>({
-  params,
-  schema,
-  authorize = false,
-}: ActionOptions<T>) {
-  if (schema && params) {
-    try {
-      schema.parse(params);
-    } catch (error) {
-      if (error instanceof ZodError) {
-        return new ValidationError(
-          z.flattenError(error).fieldErrors as Record<string, string[]>
-        );
-      } else {
-        return new Error("Schema validation failed");
-      }
-    }
-  }
-
-  let session: Session | null = null;
-  if (authorize) {
-    session = await auth();
-
-    if (!session) {
-      return new UnauthorizedError();
-    }
-  }
-
-  return { params, session };
+  params?: T
+  schema?: ZodSchema<T>
+  authorize?: boolean
 }
 
-export default action;
+export default async function action<T>({
+  params,
+  schema,
+  authorize = false
+}: ActionOptions<T>) {
+  let parsedParams = params
+
+  if (schema && params) {
+    const result = schema.safeParse(params)
+    if (!result.success) {
+      const errors = z.flattenError(result.error)
+      return new ValidationError(errors.fieldErrors as Record<string, string[]>)
+    }
+    parsedParams = result.data
+  }
+
+  let session: Session | null = null
+  if (authorize) {
+    session = await auth()
+    if (!session) {
+      return new UnauthorizedError()
+    }
+  }
+
+  return { params: parsedParams, session }
+}
