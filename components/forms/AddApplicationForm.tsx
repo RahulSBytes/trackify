@@ -2,30 +2,29 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState, useTransition } from 'react'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
+import { Path, useForm } from 'react-hook-form' 
 
 import { Button } from '../ui/button'
 import { Form } from '../ui/form'
 import { Textarea } from '@/components/ui/textarea'
 import { Input } from '../ui/input'
-import { applicationSchema, CreateApplicationInput } from '@/lib/validation'
+import { ApplicationFormInput, applicationSchema } from '@/lib/validation'
 import { RotateCw, Sparkle } from 'lucide-react'
-import { Application, OptionalFieldKey } from '@/types/global'
+import { Application } from '@/types/global'
 import {
   APPLICATION_STATUSES_UI,
+  CURRENCY_OPTIONS,
   JOB_MODE_OPTIONS,
   JOB_PORTALS_UI,
-  JOB_TYPE_OPTIONS
+  JOB_TYPE_OPTIONS,
+  SALARY_PERIOD_OPTIONS
 } from '@/constants'
 import InputField from './InputField'
 import { SelectField } from './SelectField'
 import MoreFields from './MoreFields'
 import { createApplication } from '@/lib/actions/application.action'
-import ROUTES from '@/constants/routes'
-import router from 'next/router'
-import { toast } from 'sonner'
-import { cleanEmptyStrings } from '@/lib/utils'
+import { Checkbox } from '../ui/checkbox'
+import { Field, FieldLabel } from '../ui/field'
 
 interface Params {
   application?: Application
@@ -40,24 +39,29 @@ export default function AddApplicationForm({
   //   const router = useRouter()
   const [isPending, startTransition] = useTransition()
 
-  const form = useForm<z.infer<typeof applicationSchema>>({
+
+
+  const form = useForm<ApplicationFormInput>({
     resolver: zodResolver(applicationSchema),
     defaultValues: {
       role: application?.role || '',
-      dateApplied: application?.dateApplied || '',
+      dateApplied: application?.dateApplied || new Date().toISOString().split('T')[0],
       company: application?.company || '',
       location: application?.location || '',
       jobDescription: application?.jobDescription || '',
-      salaryOrStipend: application?.salaryOrStipend || '',
       mode: application?.mode || 'onsite',
       type: application?.type || 'full_time',
-      portal: application?.portal || '',
+      portal: application?.portal || 'other',
       applicationDeadline: application?.applicationDeadline || '',
       notes: application?.notes || '',
+      salaryMax : application?.salaryMax || 0,
+      salaryMin :application?.salaryMin || 0,
+      salaryCurrency :application?.salaryCurrency || 'INR',
+      salaryPeriod : application?.salaryPeriod || 'ANNUAL' ,
+      isUnpaid : application?.isUnpaid || false,
       applicationUrl: application?.applicationUrl || '',
       followUpDate: application?.followUpDate || '',
       status: application?.status || 'applied',
-      logo: application?.logo || ''
     }
   })
 
@@ -69,7 +73,7 @@ export default function AddApplicationForm({
 
 
   const handleCreateQuestion = async (
-    data: CreateApplicationInput
+    data: ApplicationFormInput
   ) => {
     startTransition(async () => {
     
@@ -97,28 +101,44 @@ export default function AddApplicationForm({
 
       const result = await createApplication(data);
 
-      if (result.success) {
-        toast({
-          title: 'Success',
-          description: 'Your question has been posted successfully.'
-        })
-        if (result.data) router.push(ROUTES.QUESTION(result.data._id))
-      } else {
-        toast({
-          title: `Error (${result.status})`,
-          description: result.error?.message,
-          variant: 'destructive'
-        })
-      }
+      // if (result.success) {
+      //   toast({
+      //     title: 'Success',
+      //     description: 'Your question has been posted successfully.'
+      //   })
+      //   if (result.data) router.push(ROUTES.QUESTION(result.data._id))
+      // } else {
+      //   toast({
+      //     title: `Error (${result.status})`,
+      //     description: result.error?.message,
+      //     variant: 'destructive'
+      //   })
+      // }
     })
   }
 
-  const handleInsert = (newFields: Set<OptionalFieldKey>) => {
-    activeFields.forEach((key) => {
-      if (!newFields.has(key)) form.unregister(key)
-    })
-    setActiveFields(newFields)
-  }
+type OptionalFieldKey =
+  | "applicationDeadline"
+  | "notes"
+  | "followUpDate"
+  | "jobDescription"
+  | "applicationUrl"
+  | "portal"
+  | "salaryOrStipend"
+
+const OPTIONAL_FIELD_GROUPS: Partial<Record<OptionalFieldKey, Path<Application>[]>> = {
+  salaryOrStipend: ["salaryMin", "salaryMax", "salaryCurrency", "salaryPeriod", "isUnpaid"],
+}
+
+const handleInsert = (newFields: Set<OptionalFieldKey>) => {
+  activeFields.forEach((key) => {
+    if (!newFields.has(key)) {
+      const fieldsToRemove = OPTIONAL_FIELD_GROUPS[key] ?? [key as unknown as Path<Application>]
+      fieldsToRemove.forEach((fieldName) => form.unregister(fieldName))
+    }
+  })
+  setActiveFields(newFields)
+}
 
   return (
     <Form {...form}>
@@ -224,24 +244,73 @@ export default function AddApplicationForm({
 
         {activeFields.has('notes') && (
           <InputField form={form} name='notes' label='Notes'>
-            {(field) => <Textarea id='notes' className='min-h-28' {...field} />}
+            {(field) => <Textarea id='notes' className='min-h-28' {...field}/>}
           </InputField>
         )}
 
         {activeFields.has('salaryOrStipend') && (
+          <>
+          <div className='flex-between'>
+            <h3>Salary</h3>
+            <InputField form={form} name="isUnpaid" className=' w-fit'>
+            {(field) => ( <Field orientation="horizontal" >
+              <Checkbox checked={field.value} onCheckedChange={(checked) => field.onChange(checked)} />
+            <FieldLabel htmlFor="unpaid-checkbox">
+              Unpaid
+          </FieldLabel>
+            </Field>
+            )}
+          </InputField>
+          </div>
+            <div className='flex flex-col md:flex-row gap-6'>
+            <div className='flex gap-6'>
+
           <InputField
             form={form}
-            name='salaryOrStipend'
-            label='Salary / stipend'
+            name='salaryMin'
+            label='Min'
           >
             {(field) => (
               <Input
                 {...field}
-                className='min-h-10 border'
-                placeholder='e.g : 44k, 24lac, 8cr, 12lac-15lac (range)'
+                className='min-h-10'
+                placeholder='200000' type='number'
               />
             )}
           </InputField>
+          <InputField
+            form={form}
+            name='salaryMax'
+            label='Max'
+          >
+            {(field) => (
+              <Input
+                {...field}
+                className='min-h-10'
+                placeholder='600000' type='number'
+              />
+            )}
+          </InputField>
+           </div>
+
+           <div className='flex gap-5 flex-1'>
+
+          
+          <SelectField
+              form={form}
+              name='salaryCurrency'
+              label='Currency'
+              options={CURRENCY_OPTIONS}
+            />
+            <SelectField
+              form={form}
+              name='salaryPeriod'
+              label='Period'
+              options={SALARY_PERIOD_OPTIONS}
+            />
+             </div>
+            </div>
+          </>
         )}
 
         <div className='flex gap-6'>

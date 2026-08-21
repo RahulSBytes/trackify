@@ -1,4 +1,4 @@
-import { APPLICATION_STATUSES } from '@/constants'
+import { APPLICATION_STATUSES, CURRENCY_OPTIONS, SALARY_PERIOD_OPTIONS } from '@/constants'
 import { z } from 'zod'
 
 export const SignInSchema = z.object({
@@ -30,21 +30,32 @@ export const signUpSchema = z.object({
 
 export const applicationSchema = z.object({
   role: z.string(),
-  dateApplied: z.string(),
-  applicationDeadline: z.string(),
-  notes: z.string(),
-  followUpDate: z.string(),
-  company: z.string(),
-  mode: z.string(),
-  location: z.string(),
-  jobDescription: z.string(),
-  salaryOrStipend: z.string(),
   type: z.string(),
-  applicationUrl :  z.string(),
-  portal: z.string(),
+  company: z.string(),
+  
   status: z.enum(APPLICATION_STATUSES),
-  logo: z.string()
+  dateApplied: z.string(),
+
+  mode: z.string(),
+
+  location: z.string().optional().transform(v => (v === '' ? undefined : v)),
+  applicationDeadline: z.string(),
+  notes: z.string().optional().transform(v => (v === '' ? undefined : v)),
+  followUpDate: z.string(),
+  jobDescription: z.string().optional().transform(v => (v === '' ? undefined : v)),
+  salaryMin : z.number(),
+  salaryMax : z.number(),
+  isUnpaid: z.boolean().default(false),
+  salaryCurrency : z.enum(CURRENCY_OPTIONS.map(o=>o.value) as [string, ...string[]]),
+  salaryPeriod : z.enum(SALARY_PERIOD_OPTIONS.map(o=>o.value) as [string, ...string[]]),
+  applicationUrl :  z.string().optional().transform(v => (v === '' ? undefined : v)),
+  portal: z.string(),
+  logo: z.string().optional()
 })
+
+
+export type ApplicationFormInput = z.input<typeof applicationSchema>  // data before validation
+export type ApplicationInput = z.infer<typeof applicationSchema>  // data after validation same as z.output<typeof applicationSchema>
 
 
 

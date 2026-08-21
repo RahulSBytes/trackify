@@ -7,37 +7,42 @@ import {
   UseFormReturn
 } from 'react-hook-form'
 
-interface InputFieldProps<T extends FieldValues> {
-  children: (field: ControllerRenderProps<T, Path<T>>) => React.ReactNode
+interface InputFieldProps<
+  T extends FieldValues,
+  TName extends Path<T> = Path<T>
+> {
+  children: (field: ControllerRenderProps<T, TName>) => React.ReactNode
   form: UseFormReturn<T>
-  name: Path<T>
-  label: string
+  name: TName
+  label?: string
   className?: string
-  required ?: boolean
+  required?: boolean
 }
 
-export default function InputField<T extends FieldValues>({
+export default function InputField<
+  T extends FieldValues,
+  TName extends Path<T> = Path<T>
+>({
   children,
   form,
   name,
-  label,
+  label = '',
   className,
   required = false
-}: InputFieldProps<T>) {
+}: InputFieldProps<T, TName>) {
   return (
-    <>
-      <FormField
-        control={form.control}
-        name={name}
-        render={({ field }) => (
-          <FormItem className={`flex w-full flex-col ${className}`}>
-            <FormLabel className='text-base'>
-              {label} {required && <span className='text-destructive'>*</span>}
-            </FormLabel>
-            <FormControl>{children(field)}</FormControl>
-          </FormItem>
-        )}
-      />
-    </>
+    <FormField
+      control={form.control}
+      name={name}
+      render={({ field }) => (
+        <FormItem className={`flex w-full flex-col ${className}`}>
+          <FormLabel className='text-base'>
+            {label} {required && <span className='text-destructive'>*</span>}
+          </FormLabel>
+
+          <FormControl>{children(field)}</FormControl>
+        </FormItem>
+      )}
+    />
   )
 }
