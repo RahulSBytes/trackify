@@ -7,7 +7,7 @@ import { PencilLine } from 'lucide-react'
 
 function RightSidebar() {
   interface TopCompany {
-    _id: string
+    id: string
     company: string
     logo: string
     count: number
@@ -18,8 +18,8 @@ function RightSidebar() {
       <div className='h-fit mb-6'>
         <h2 className='text-lg'>Top companies</h2>
         <div className='flex flex-col gap-4 py-4 px-2'>
-          {topCompanies.map(({ _id, company, logo, count }: TopCompany) => (
-            <div key={_id} className='flex flex-between'>
+          {topCompanies.map(({ id, company, logo, count }: TopCompany) => (
+            <div key={id} className='flex flex-between'>
               <div className='flex gap-3'>
                 <Image src={logo} width={20} height={20} alt={company} />
                 <p>{company}</p>

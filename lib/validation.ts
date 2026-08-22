@@ -1,4 +1,11 @@
-import { APPLICATION_STATUSES, CURRENCY_OPTIONS, SALARY_PERIOD_OPTIONS } from '@/constants'
+import {
+  APPLICATION_STATUSES,
+  CURRENCY_OPTIONS,
+  JOB_MODE_OPTIONS,
+  JOB_TYPE_OPTIONS,
+  SALARY_PERIOD_OPTIONS
+} from '@/constants'
+import { ApplicationStatus, Currency, JobMode, JobType, SalaryPeriod } from '@/types/global'
 import { z } from 'zod'
 
 export const SignInSchema = z.object({
@@ -29,43 +36,61 @@ export const signUpSchema = z.object({
 })
 
 export const applicationSchema = z.object({
-  role: z.string(),
-  type: z.string(),
-  company: z.string(),
-  
-  status: z.enum(APPLICATION_STATUSES),
+  type: z.enum(JOB_TYPE_OPTIONS.map((O) => O.value) as [JobType, ...JobType[]]),
+  role: z.string().min(1, 'Role is required'),
+  company: z.string().min(1, 'Company is required'),
+
+  status: z.enum(
+    APPLICATION_STATUSES.map((O) => O.value) as [
+      ApplicationStatus,
+      ...ApplicationStatus[]
+    ]
+  ),
   dateApplied: z.string(),
 
-  mode: z.string(),
+  mode: z.enum(JOB_MODE_OPTIONS.map((O) => O.value) as [JobMode, ...JobMode[]]),
 
-  location: z.string().optional().transform(v => (v === '' ? undefined : v)),
+  location: z
+    .string()
+    .optional()
+    .transform((v) => (v === '' ? undefined : v)),
   applicationDeadline: z.string(),
-  notes: z.string().optional().transform(v => (v === '' ? undefined : v)),
+  notes: z
+    .string()
+    .optional()
+    .transform((v) => (v === '' ? undefined : v)),
   followUpDate: z.string(),
-  jobDescription: z.string().optional().transform(v => (v === '' ? undefined : v)),
-  salaryMin : z.number(),
-  salaryMax : z.number(),
+  jobDescription: z
+    .string()
+    .optional()
+    .transform((v) => (v === '' ? undefined : v)),
+  salaryMin: z.coerce.number().optional(),
+  salaryMax: z.coerce.number().optional(),
   isUnpaid: z.boolean().default(false),
-  salaryCurrency : z.enum(CURRENCY_OPTIONS.map(o=>o.value) as [string, ...string[]]),
-  salaryPeriod : z.enum(SALARY_PERIOD_OPTIONS.map(o=>o.value) as [string, ...string[]]),
-  applicationUrl :  z.string().optional().transform(v => (v === '' ? undefined : v)),
+  salaryCurrency: z.enum(
+    CURRENCY_OPTIONS.map((o) => o.value) as [Currency, ...Currency[]]
+  ),
+  salaryPeriod: z.enum(
+    SALARY_PERIOD_OPTIONS.map((o) => o.value) as [SalaryPeriod, ...SalaryPeriod[]]
+  ),
+  applicationUrl: z
+    .string()
+    .optional()
+    .transform((v) => (v === '' ? undefined : v)),
   portal: z.string(),
   logo: z.string().optional()
 })
 
-
-export type ApplicationFormInput = z.input<typeof applicationSchema>  // data before validation
-export type ApplicationInput = z.infer<typeof applicationSchema>  // data after validation same as z.output<typeof applicationSchema>
-
-
+export  type ApplicationFormInput = z.input<typeof applicationSchema> // data before validation transformation applied
+export type ApplicationFormData = z.output<typeof applicationSchema> // data after validation same as z.output<typeof applicationSchema>
 
 export const SignInWithOAuthSchema = z.object({
-  provider: z.enum(["github", "google"]),
-  providerAccountId: z.string().min(1, "Provider account ID is required"),
+  provider: z.enum(['github', 'google']),
+  providerAccountId: z.string().min(1, 'Provider account ID is required'),
   user: z.object({
-    name: z.string().min(1, "Name is required"),
-    username: z.string().min(3, "Username must be at least 3 characters"),
-    email: z.string().email("Invalid email address"),
-    image: z.string().url("Invalid image URL").optional(),
-  }),
-});
+    name: z.string().min(1, 'Name is required'),
+    username: z.string().min(3, 'Username must be at least 3 characters'),
+    email: z.string().email('Invalid email address'),
+    image: z.string().url('Invalid image URL').optional()
+  })
+})

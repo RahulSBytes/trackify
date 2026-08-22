@@ -1,15 +1,5 @@
-export const APPLICATION_STATUSES = [
-  'wishlist',
-  'applied',
-  'under_review',
-  'interviewing',
-  'offer_received',
-  'accepted',
-  'rejected',
-  'withdrawn'
-] as const
 
-export const APPLICATION_STATUSES_UI = [
+export const APPLICATION_STATUSES = [
   { label: 'Wishlist', value: 'wishlist' },
   { label: 'Applied', value: 'applied' },
   { label: 'Under Review', value: 'under_review' },
@@ -46,14 +36,16 @@ export const SALARY_PERIOD_OPTIONS = [
 
 
 export const JOB_TYPE_OPTIONS = [
-  { label: 'Full-time', value: 'full-time' },
-  { label: 'Part-time', value: 'part-time' },
+  { label: 'Full-time', value: 'full_time' },
+  { label: 'Part-time', value: 'part_time' },
   { label: 'Internship', value: 'internship' },
   { label: 'Contract', value: 'contract' },
   { label: 'Freelance', value: 'freelance' },
   { label: 'Volunteer', value: 'volunteer' },
   { label: 'Other', value: 'other' }
 ] as const
+
+
 
 export const JOB_MODE_OPTIONS = [
   { label: 'Remote', value: 'remote' },

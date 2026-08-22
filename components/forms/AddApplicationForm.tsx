@@ -12,7 +12,7 @@ import { ApplicationFormInput, applicationSchema } from '@/lib/validation'
 import { RotateCw, Sparkle } from 'lucide-react'
 import { Application } from '@/types/global'
 import {
-  APPLICATION_STATUSES_UI,
+  APPLICATION_STATUSES,
   CURRENCY_OPTIONS,
   JOB_MODE_OPTIONS,
   JOB_PORTALS_UI,
@@ -65,6 +65,9 @@ export default function AddApplicationForm({
     }
   })
 
+        console.log(form.formState.errors)
+
+
   const [activeFields, setActiveFields] = useState<Set<OptionalFieldKey>>(
     new Set()
   )
@@ -75,7 +78,7 @@ export default function AddApplicationForm({
   const handleCreateQuestion = async (
     data: ApplicationFormInput
   ) => {
-    startTransition(async () => {
+    
     
 
       // if (isEdit && application) {
@@ -99,7 +102,13 @@ export default function AddApplicationForm({
       //   return
       // }
 
-      const result = await createApplication(data);
+      try {
+        
+        const result = await createApplication(data);
+      } catch (error) {
+        console.log(error)
+      }
+
 
       // if (result.success) {
       //   toast({
@@ -114,7 +123,7 @@ export default function AddApplicationForm({
       //     variant: 'destructive'
       //   })
       // }
-    })
+    
   }
 
 type OptionalFieldKey =
@@ -201,7 +210,7 @@ const handleInsert = (newFields: Set<OptionalFieldKey>) => {
             form={form}
             name='status'
             label='Status'
-            options={APPLICATION_STATUSES_UI}
+            options={APPLICATION_STATUSES}
           />
 
           <InputField
@@ -274,6 +283,7 @@ const handleInsert = (newFields: Set<OptionalFieldKey>) => {
               <Input
                 {...field}
                 className='min-h-10'
+                value={field.value as number | ''}
                 placeholder='200000' type='number'
               />
             )}
@@ -287,6 +297,7 @@ const handleInsert = (newFields: Set<OptionalFieldKey>) => {
               <Input
                 {...field}
                 className='min-h-10'
+               value={field.value as number | ''}
                 placeholder='600000' type='number'
               />
             )}

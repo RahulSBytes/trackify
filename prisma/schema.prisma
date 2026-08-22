@@ -54,19 +54,23 @@ enum ApplicationPortal {
 }
 
 enum SalaryPeriod {
-  monthly
-  annual
+  HOURLY
+  DAILY
+  WEEKLY
+  MONTHLY
+  ANNUAL
+  ONE_TIME
 }
 
 enum Currency {
-  inr
-  usd
-  eur
-  gbp
-  cad
-  aud
-  sgd
-  aed
+  INR
+  USD
+  EUR
+  GBP
+  CAD
+  AUD
+  SGD
+  AED
 }
 
 // ================= Models =================
@@ -113,11 +117,11 @@ model Application {
   mode     JobMode?
   location String?
 
-  salaryMin       Int?
-  salaryMax       Int?
-  salaryCurrency  Currency?
-  salaryPeriod    SalaryPeriod?
-  salaryDisclosed Boolean       @default(false)
+  salaryMin      Int?
+  salaryMax      Int?
+  salaryCurrency Currency?
+  salaryPeriod   SalaryPeriod?
+  isUnpaid       Boolean       @default(false)
 
   portal         String?
   applicationUrl String?
